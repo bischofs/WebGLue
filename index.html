@@ -1,0 +1,239 @@
+<html>
+	<head>
+		<title>OVoiD.JS Html Template Example</title>
+		<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+		<!-- Library core (must be loaded first), change the path as your needs -->
+		<script type="text/javascript" src="ovoid.js/core.js"></script>
+
+		<!-- Library options (must be loaded in last) -->
+		<script type="text/javascript" src="ovoid.js/config.js"></script>
+
+		<script type="text/javascript">
+  Ovoid.opt_logLevel = 1;
+    // Disable the debug mode
+    Ovoid.opt_debugMode = false;
+    // Disable hud display
+    Ovoid.opt_showHud = false;
+    // Disable debug display
+    Ovoid.opt_showDebug = false;
+    // Enable the shadow-casting rendering
+    Ovoid.Drawer.opt_shadowCasting = true; 
+    // Hide helpers
+    Ovoid.Drawer.opt_drawHelpers = false; 
+    // Gravity rescale
+    Ovoid.opt_gravity = [0.0,-150.0,0.0];
+
+    // Create a new scene object
+    var scene = new Ovoid.Scene("HelloWorld");
+    // Our future nodes's references
+    var material, mesh, box, light, ground;
+                  
+    var GuiWatermark;
+    var GuiHelpframe;
+                  
+    // To count our boxes
+    var nbox = 0;
+                  
+    // Function to drop a new box
+    dropbox = function() {
+                  
+        if( Ovoid.Input.mouseOverNode == GuiWatermark)
+          return;
+                  
+        // clear the scene when box count become dramatic
+        if(nbox > 50) {
+          scene.removeMatches("Box");
+          nbox = 0;
+        }
+        // Create a material, mesh, body and assign physics
+        material = scene.create(Ovoid.MATERIAL, "BoxMaterial" + nbox);
+        // Random color
+        material.setColor(Ovoid.DIFFUSE, 
+            Ovoid.randFloat(0.0, 1.0), 
+            Ovoid.randFloat(0.0, 1.0), 
+            Ovoid.randFloat(0.0, 1.0), 1.0);
+        mesh = scene.create(Ovoid.MESH, "BoxShape" + nbox);
+        // Random size and mass
+        var u = Ovoid.randFloat(4.0, 12.0)
+        mesh.genDebugBox(0, u, 1, material);
+        // Optimize mesh
+        mesh.optimizeVertices();
+        mesh.optimizeTriangles();
+        mesh.createBuffers(Ovoid.VERTEX_VEC4_P|Ovoid.VERTEX_VEC3_N, Ovoid.BUFFER_STATIC);
+        // Create a new body
+        box = scene.create(Ovoid.BODY, "Box" + nbox);
+        box.setShape(mesh);
+        // Random position
+        box.moveXyz(Ovoid.randFloat(-30.0, 30.0),
+            60.0,
+            Ovoid.randFloat(-30.0, 30.0));
+        // Random rotation
+        box.rotateXyz(Ovoid.randFloat(-3.14, 3.14),
+            Ovoid.randFloat(-3.14, 3.14),
+            Ovoid.randFloat(-3.14, 3.14));
+        // Assign Physics constraint node to Body node
+        physics = Ovoid.setConstraint(Ovoid.PHYSICS, box);
+        // Our box's physics model is a rigid and massive body, box shaped
+        physics[0].model = Ovoid.RIGID_MASSIVE_BOX;
+        // A significant mass
+        physics[0].setMass(100.0);
+        // Use friction for contacts
+        physics[0].useFriction = true;
+        // Contact restitution
+        physics[0].restitution = 0.1;
+        // Sleeping thressold
+        physics[0].sleeping = 5.0;
+        nbox++;
+                  
+        // Hide the legend whith the first drop
+        GuiHelpframe.visible = false;
+    };
+                  
+    // Go to OvoiD.JS home page
+    AcFuncGohome = function() {
+      window.location.href = "http://www.ovoid.org/js/home";
+    };
+    // Highlight Watermark link
+    AcFuncMouseEnter = function(node) {
+      node.setBgColor(1.0,1.0,1.0,0.8);
+    };
+    AcFuncMouseLeave = function(node) {
+      node.setBgColor(1.0,1.0,1.0,0.6);
+    };
+    AcFuncMouseOver = function(node) {
+      node.moveXyz(0.0,-Math.log(Math.sin(Ovoid.Timer.clock*0.015)+1.05)*2.0,0.0);
+    };
+    // Define the Ovoid.onload function
+    Ovoid.onload = function() {
+                  
+      // Change the clear color for a dark background
+      Ovoid.Drawer.opt_clearColor = [0.08, 0.08, 0.08, 1.0];
+                  
+      // Set our scene as active before working
+      Ovoid.useScene(scene);
+                  
+      // Create a new Material node
+      material = scene.create(Ovoid.MATERIAL, "GroundMaterial");
+      // Set material's diffuse color
+      material.setColor(Ovoid.DIFFUSE, 1.0, 1.0, 1.0, 1.0);
+      // Create a new Mesh node
+      mesh = scene.create(Ovoid.MESH, "GroundShape");
+      // Generate debugging box mesh data 
+      mesh.genDebugGrid(0, 600.0, 1, material);
+      // Optimize mesh
+      mesh.optimizeVertices();
+      mesh.optimizeTriangles();
+      // Create GL buffers for this mesh
+      mesh.createBuffers(Ovoid.VERTEX_VEC4_P|Ovoid.VERTEX_VEC3_N, Ovoid.BUFFER_STATIC);
+      // Create a new empty Body node
+      ground = scene.create(Ovoid.BODY, "Ground");
+      // Set mesh as Body's shape
+      ground.setShape(mesh);
+      // Moves the ground 
+      ground.moveXyz(0.0,-1.0,0.0);
+                  
+      // Assign a physics constraint to our ground
+      physics = Ovoid.setConstraint(Ovoid.PHYSICS, ground);
+      // Our ground's physics model is a landscape
+      physics[0].model = Ovoid.RIGID_LANDSCAPE;
+                  
+      // Create a new Light node
+      light = scene.create(Ovoid.LIGHT, "SpotLight");
+      // Move our light from world's origin
+      light.moveXyz(0.0,90.0,70.0);
+      // Rotate our light
+      light.rotateXyz(-1.1,0.0,0.0);
+      // Change the spot cone angle
+      light.setSpotAngle(35);
+      light.falloff = 0.15;
+      //light.model = Ovoid.LIGHT_DIRECTIONAL;
+      //light.rotateXyz(3.15,0.0,0.0);
+                  
+
+      // Create a new null Transform node as camera's orbit center
+      locator = scene.create(Ovoid.TRANSFORM, "DragCameraOrbit");
+
+      // Create a new Camera node with locator as parent
+      camera = scene.create(Ovoid.CAMERA, "DragCamera", locator);
+      // Move our camera backward
+      camera.moveXyz(0.12,-6.0,90.0);
+                  
+      // Rotate the locator
+      locator.rotateXyz(0.0,-1.4,0.0,Ovoid.WORLD,Ovoid.RELATIVE);
+      locator.rotateXyz(-0.7,0.0,0.0,Ovoid.LOCAL,Ovoid.RELATIVE);
+                  
+      // Set our new camera as active for render
+      Ovoid.useCamera(camera);
+                  
+      // Our function to orbit camera
+      var orbit = function() {
+        // Search our orbit locator node
+        var node = Ovoid.search("DragCameraOrbit");
+        // Rotation about X axis in local coordinate
+        node.rotateXyz(Ovoid.Input.mouseVelocity.v[1]*0.005,0.0,0.0,Ovoid.LOCAL,Ovoid.RELATIVE);
+        // Rotation about Y axis in world coordinate
+        node.rotateXyz(0.0,Ovoid.Input.mouseVelocity.v[0]*0.005,0.0,Ovoid.WORLD,Ovoid.RELATIVE);
+      }
+                  
+      // Our function for camera dolly
+      var dolly = function() {
+        // Dolly camera according to the mouse wheel delta
+        Ovoid.cameraDolly(Ovoid.Input.mouseWheelDelta*-0.5);
+      }
+                  
+      // Bind input trigger to rotate our camera when middle mouse button is held
+      Ovoid.inputTrigger(null, Ovoid.MB_MIDDLE, Ovoid.HELD, orbit);
+      // Bind input trigger to dolly our camera when mouse wheel move
+      Ovoid.inputTrigger(null, Ovoid.MOUSE_WHEEL, Ovoid.UP, dolly);
+      Ovoid.inputTrigger(null, Ovoid.MOUSE_WHEEL, Ovoid.DOWN, dolly);
+                  
+      // Bind input trigger to drop a new box with left mouse button down
+      Ovoid.inputTrigger(null, Ovoid.MB_LEFT, Ovoid.DOWN, dropbox);
+                  
+      texture = scene.create(Ovoid.TEXTURE, "watermarkTexture");
+      texture.loadSource('ovoid-watermark.png', 1);
+      GuiWatermark = scene.create(Ovoid.LAYER, "watermarkLayer");
+      GuiWatermark.setSize(200,73);
+      GuiWatermark.setBgColor(1.0,1.0,1.0,0.6);
+      GuiWatermark.setBgTexture(texture);
+                  
+      texture = scene.create(Ovoid.TEXTURE, "helpframeTexture");
+      texture.loadSource('rainbox-splash.png', 1);
+      GuiHelpframe = scene.create(Ovoid.LAYER, "helpframeLayer");
+      GuiHelpframe.setSize(512,512);
+      GuiHelpframe.setBgColor(1.0,1.0,1.0,1.0);
+      GuiHelpframe.setBgTexture(texture);
+                  
+      // OvoiD.JS home
+      Ovoid.setAction(Ovoid.MOUSE_LEAVE, GuiWatermark, AcFuncMouseLeave );
+      Ovoid.setAction(Ovoid.MOUSE_ENTER, GuiWatermark, AcFuncMouseEnter );
+      Ovoid.setAction(Ovoid.MOUSE_OVER, GuiWatermark, AcFuncMouseOver );
+      Ovoid.setAction(Ovoid.MOUSE_OVER_LEFT_DOWN, GuiWatermark, AcFuncGohome );
+                  
+      // Bind D to show debug
+      Ovoid.inputTrigger(null, Ovoid.KB_D, Ovoid.DOWN, function(){Ovoid.opt_showDebug=!Ovoid.opt_showDebug});
+    };
+
+    // Define the Ovoid.onloop function 
+		Ovoid.onloop = function() {
+                  
+      // keep our legend, watermak and code sample button at the bottom of frame
+      GuiWatermark.moveXyz(Ovoid.Frame.size.v[0]-210, Ovoid.Frame.size.v[1]-83, 0, Ovoid.WORLD, Ovoid.ABSOLUTE);
+      if(GuiHelpframe.visible)
+        GuiHelpframe.moveXyz((Ovoid.Frame.size.v[0]*0.5)-256, (Ovoid.Frame.size.v[1]*0.5)-256, 0, Ovoid.WORLD, Ovoid.ABSOLUTE);
+		};
+                  
+    function main() {
+			Ovoid.init("canvas");
+		};
+
+		</script>
+
+	</head>
+
+	<body style="text-align:center; margin:0px;" onload="main();">
+		<canvas id="canvas" width=800 height=500 style="border: 0;"/>
+	</body>
+
+</html>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OVOID_GLSL_WRAPMAP xmlns="http://www.ovoid.org" version="0.8">
+	<attribute>
+		<s symbol="VERTEX_VEC4_P" 							id="0x01">p</s>
+		<s symbol="VERTEX_VEC3_N" 							id="0x02">n</s>
+		<s symbol="VERTEX_VEC3_U" 							id="0x04">u</s>
+		<s symbol="VERTEX_VEC3_T" 							id="0x08">t</s>
+		<s symbol="VERTEX_VEC3_B" 							id="0x10">b</s>
+		<s symbol="VERTEX_VEC4_C" 							id="0x20">c</s>
+		<s symbol="VERTEX_VEC4_I" 							id="0x40">i</s>
+		<s symbol="VERTEX_VEC4_W" 							id="0x80">w</s>
+	</attribute>
+	<uniform>
+		<s symbol="UNIFORM_ENABLE_DIFFUSE_LIGHTING_BOOL" 		id="0">ENd</s>
+		<s symbol="UNIFORM_ENABLE_AMBIENT_LIGHTING_BOOL" 		id="1">ENa</s>
+		<s symbol="UNIFORM_ENABLE_SPECULAR_BOOL" 				id="2">ENs</s>
+		<s symbol="UNIFORM_ENABLE_REFLECT_BOOL" 				id="3">ENr</s>
+		<s symbol="UNIFORM_ENABLE_PARALAX_BOOL" 				id="4">ENp</s>
+		<s symbol="UNIFORM_ENABLE_MATERIAL_BOOL" 				id="5">ENm</s>
+		<s symbol="UNIFORM_ENABLE_VERTEX_WEIGHT_BOOL" 		id="6">ENw</s>
+		<s symbol="UNIFORM_ENABLE_COMPUT_TANGENT_BOOL" 		id="7">ENt</s>
+		<s symbol="UNIFORM_ZOFFSET_FLOAT" 					id="8">Z</s>
+		<s symbol="UNIFORM_COLOR_VEC4" 						id="9">C</s>
+		<s symbol="UNIFORM_MATERIAL_AMBIENT_VEC4" 			id="10">Ma</s>
+		<s symbol="UNIFORM_MATERIAL_DIFFUSE_VEC4" 			id="11">Md</s>
+		<s symbol="UNIFORM_MATERIAL_SPECULAR_VEC4" 			id="12">Ms</s>
+		<s symbol="UNIFORM_MATERIAL_EMISSIVE_VEC4" 			id="13">Me</s>
+		<s symbol="UNIFORM_MATERIAL_REFLECT_VEC4" 			id="14">Mr</s>
+		<s symbol="UNIFORM_MATERIAL_SHININESS_FLOAT" 			id="15">Mi</s>
+		<s symbol="UNIFORM_MATERIAL_OPACITY_FLOAT" 			id="16">Mo</s>
+		<s symbol="UNIFORM_MATERIAL_REFLECTIVITY_FLOAT" 		id="17">My</s>
+		<s symbol="UNIFORM_MATERIAL_BUMPINESS_FLOAT" 			id="18">Mb</s>
+		<s symbol="UNIFORM_LIGHT_POSITION_VEC4" 				id="20">Lp</s>
+		<s symbol="UNIFORM_LIGHT_DIRECTION_VEC3" 				id="21">Ld</s>
+		<s symbol="UNIFORM_LIGHT_COLOR_VEC4" 					id="22">Lc</s>
+		<s symbol="UNIFORM_LIGHT_INTENSITY_FLOAT" 			id="23">Li</s>
+		<s symbol="UNIFORM_LIGHT_CONSTANT_ATTENUATION_FLOAT" 	id="23">Lac</s>
+		<s symbol="UNIFORM_LIGHT_RANGE_FLOAT" 				id="24">Lr</s>
+		<s symbol="UNIFORM_LIGHT_FALLOFF_FLOAT" 				id="25">Lf</s>
+		<s symbol="UNIFORM_LIGHT_SPOTANGLE_FLOAT" 			id="26">La</s>
+		<s symbol="UNIFORM_LIGHT_LINEAR_ATTENUATION_FLOAT" 	id="27">Lal</s>
+		<s symbol="UNIFORM_LIGHT_ENABLED_BOOL" 				id="28">Le</s>
+		<s symbol="UNIFORM_LIGHT_QUADRIC_ATTENUATION_FLOAT" 	id="29">Laq</s>
+		<s symbol="UNIFORM_EYE_POSITION_VEC4" 				id="30">Ep</s>
+		<s symbol="UNIFORM_EYE_DIRECTION_VEC4" 				id="31">Ed</s>
+		<s symbol="UNIFORM_EYE_VIEWSIZE_VEC3" 				id="32">Es</s>
+    <s symbol="UNIFORM_AMBIENT_COLOR_VEC4" 				id="40">Ac</s>
+		<s symbol="UNIFORM_LAYER_SIZE_VEC3" 					id="42">Ls</s>
+    <s symbol="UNIFORM_FOG_COLOR_VEC4" 					  id="44">Fc</s>
+    <s symbol="UNIFORM_FOG_DENSITY_FLOAT" 				id="45">Fd</s>
+	</uniform>
+	<uniformMatrix>
+		<s symbol="UNIFORM_MATRIX_TRANSFORM_MAT4" 				id="0">MXF</s>
+		<s symbol="UNIFORM_MATRIX_NORMAL_MAT3" 				id="1">MNR</s>
+		<s symbol="UNIFORM_MATRIX_MODELVIEW_MAT4" 			id="2">MMV</s>
+		<s symbol="UNIFORM_MATRIX_EYEVIEW_MAT4" 				id="3">MEV</s>
+		<s symbol="UNIFORM_MATRIX_PROJECTION_MAT4" 			id="4">MPJ</s>
+		<s symbol="UNIFORM_MATRIX_LOOKAT_MAT4" 				id="5">MLA</s>
+		<s symbol="UNIFORM_MATRIX_JOINTS_MAT4" 				id="6">MJT</s>
+	</uniformMatrix>
+	<uniformSampler>
+		<s symbol="SAMPLER_DEFAULT" 							id="1">Sd</s>	
+		<s symbol="SAMPLER_AMBIENT" 							id="0">Sa</s>
+		<s symbol="SAMPLER_DIFFUSE" 							id="1">Sd</s>
+		<s symbol="SAMPLER_SPECULAR" 							id="2">Ss</s>
+		<s symbol="SAMPLER_EMISSIVE" 							id="3">Se</s>
+		<s symbol="SAMPLER_REFLECT" 							id="4">Sr</s>
+		<s symbol="SAMPLER_NORMAL" 							id="5">Sn</s>
+	</uniformSampler>
+</OVOID_GLSL_WRAPMAP>
