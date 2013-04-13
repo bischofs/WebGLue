@@ -1,0 +1,13 @@
+canvas {
+	width: 400px;
+	height: 400px%;
+}
+
+#Timer {
+	float:right;
+}
+
+#Lives {
+	float:left;
+	float:top;
+}
